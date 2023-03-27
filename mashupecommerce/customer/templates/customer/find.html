@@ -1,0 +1,5 @@
+{% extends "customer/partials/customerpartial.html" %} 
+{% block maincontent %}
+{% for item in product %}
+<p>{{item.price}}</p>
+{% endfor %} {% endblock maincontent %}

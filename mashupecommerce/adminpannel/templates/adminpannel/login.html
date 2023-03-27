@@ -1,0 +1,31 @@
+{% extends "adminpannel/partials/adminpartials.html" %} {%block nocontainer%}
+<section class="">
+  <div class="container">
+    <form class="login-form" action="{%url 'login' %}" method="POST">
+      <div class="login-wrap">
+        <p class="login-img">
+          <span class="material-symbols-outlined"> account_circle </span>
+        </p>
+        {% if error %}
+        <div class="alert alert-danger">{{error}}</div>
+        {% endif %} {%csrf_token%}
+        <div class="input-group">
+          <span class="input-group-addon"
+            ><span class="material-symbols-outlined"> person </span></span
+          >
+          {{form.username}}
+        </div>
+        <div class="input-group">
+          <span class="input-group-addon"
+            ><span class="material-symbols-outlined"> key </span></span
+          >
+          {{form.password}}
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">
+          Login
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+{%endblock%}

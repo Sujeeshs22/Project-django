@@ -1,0 +1,23 @@
+<form action="{% url 'searchproduct' %}" method="POST">
+  {%csrf_token%}
+  <div class="form-group">
+    <div class="input-group">
+      <input
+        type="search"
+        class="form-control border-dark"
+        placeholder="Search..."
+        required
+        name="search"
+        id="tags"
+      />
+      <div class="input-group-append">
+        <button
+          class="btn btn-outline-dark"
+          style="text-align: center; border-radius: 10px; margin-left: 10px"
+        >
+          <span style="position: relative; bottom: 2px">search</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

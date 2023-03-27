@@ -1,0 +1,89 @@
+{% extends "customer/partials/customerpartial.html" %} 
+{% block maincontent %}
+<div class="col-md-12">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-md-12 text-center mb-4 mt-2">
+      <h1>Product details</h1>
+      <hr style="width: 110px" />
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-md-4">
+      {% for product in productdetail %}
+
+      <p>Product name <span>: {{product.product_name}}</span></p>
+      <p>Price <span>: {{product.price}}</span></p>
+      <p>Description <span>: {{product.product_description}}</span></p>
+    </div>
+    <div class="col-md-2">
+      <img
+        src="{{product.product_picture.url}}"
+        alt="product.product_name"
+        style="width: 120px; height: 100px"
+      />
+    </div>
+  </div>
+</div>
+<div class="col-md-12 text-center mt-4">
+  {% if user.is_authenticated%}
+  {% if usercart%}
+  {% for item in  usercart%}
+      {% if item.product == product %}
+      <a id="cartbtn{{product.id}}" product="{{product.id}}" href="" class="removefromcart btn btn-outline-danger" style="width:30%"><i class=" fas fa-times mr-2"></i>Remove from cart</a>
+      {% else %}
+      <a id="cartbtn{{product.id}}" product="{{product.id}}" href="" class="addtocart btn btn-outline-dark" style="width:30%"><i class="fas fa-cart-plus mr-2"></i>Add to cart</a>
+      {% endif %}
+  {% endfor %}
+  {% else %}
+      <a id="cartbtn{{product.id}}" product="{{product.id}}" href="" class="addtocart btn btn-outline-dark" style="width:30%"><i class="fas fa-cart-plus mr-2"></i>Add to cart</a>
+  {% endif %}  
+  {% endif %}
+  {% endfor %} 
+</div>
+{% endblock maincontent %}
+{% block scripts %}
+<script type="text/javascript">
+    $(document).on('click','.addtocart',function(e){
+        e.preventDefault();
+        var prod_id = $(this).attr('product');
+        $.ajax(
+      {
+          type: "POST",
+          url: "{%url 'addtocart'%}",
+          dataType: 'json',
+          data: {product:prod_id},
+          success: function(data) {
+            $('#cartbtn'+prod_id).toggleClass('addtocart removefromcart');
+            $('#cartbtn'+prod_id).toggleClass('btn-outline-dark btn-outline-danger');
+            $('#cartbtn'+prod_id).html('<i class=" fas fa-times mr-2"></i>Remove from cart');
+          },
+          error: function() { 
+            alert("server error");
+          }
+      });
+    });
+
+    $(document).on('click','.removefromcart',function(e){
+        e.preventDefault();
+        var prod_id = $(this).attr('product');
+        $.ajax(
+      {
+          type: "POST",
+          url: "{%url 'removefromcart'%}",
+          dataType: 'json',
+          data: {product:prod_id},
+          success: function(data) {
+            $('#cartbtn'+prod_id).toggleClass('removefromcart addtocart');
+            $('#cartbtn'+prod_id).toggleClass('btn-outline-danger btn-outline-dark');
+            $('#cartbtn'+prod_id).html('<i class=" fas fa-cart-plus mr-2"></i>Add to cart');
+          },
+          error: function() { 
+            alert("server error");
+          }
+      });
+    });
+</script>
+{% endblock scripts %}
+
